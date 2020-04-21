@@ -4,3 +4,5 @@
 ## [1.0.1] - Apr 21 2020
 * Added license
 
+## [1.0.1+1] - Apr 21 2020
+* Added demo link in README
