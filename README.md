@@ -28,6 +28,8 @@ void main() {
     );
 ```
 
+[Live Demo](https://timwhiting.github.io/dart_pad_widget/#/)
+
 Some code was borrowed from the dart-lang/dart-pad [repository](https://github.com/dart-lang/dart-pad).
 Credit for that goes to them.
 
