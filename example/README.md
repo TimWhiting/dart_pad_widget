@@ -34,5 +34,3 @@ Credit for that goes to them.
 It should support most of the features listed in the embedding [guide](https://github.com/dart-lang/dart-pad/wiki/Embedding-Guide)
 
 Contributions welcome
-
-![Example](https://github.com/TimWhiting/dart_pad_widget/screen_shot.png)

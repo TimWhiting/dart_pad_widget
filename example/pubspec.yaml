@@ -1,0 +1,19 @@
+name: dart_pad_widget_example
+description:
+environment:
+  # The pub client defaults to an <2.0.0 sdk constraint which we need to explicitly overwrite.
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  dart_pad_widget: any
+
+# dependency_overrides:
+#   dart_pad_widget:
+#     path: ../
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  test: 1.14.2
