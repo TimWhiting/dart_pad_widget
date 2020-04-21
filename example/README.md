@@ -2,7 +2,7 @@
 
 A new Flutter package that allows you to easily embed DartPad into your Flutter Web application.
 
-```
+```dart
 import 'package:flutter/material.dart';
 import 'package:dart_pad_widget/dart_pad_widget.dart';
 
