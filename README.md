@@ -35,4 +35,4 @@ It should support most of the features listed in the embedding [guide](https://g
 
 Contributions welcome
 
-![Example](https://github.com/TimWhiting/dart_pad_widget/screen_shot.png)
+![Example](https://github.com/TimWhiting/dart_pad_widget/blob/master/screen_shot.png))
