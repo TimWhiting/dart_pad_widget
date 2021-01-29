@@ -2,6 +2,7 @@
 // BSD-style license that can be found in the LICENSE file.
 library dart_pad;
 
+// ignore: avoid_web_libraries_in_flutter
 import 'dart:html' as html;
 import 'dart:ui' as ui;
 import 'package:html_unescape/html_unescape.dart';
@@ -10,7 +11,7 @@ import 'dart_pad_parser.dart';
 
 String _valueOr(Map<String, String> map, String value, String defaultValue) {
   if (map.containsKey(value)) {
-    return map[value];
+    return map[value]!;
   }
 
   return defaultValue;
@@ -43,7 +44,7 @@ class DartPad extends StatefulWidget {
   final String code;
   final bool split;
   DartPad(
-      {@required Key key,
+      {required Key key,
       this.width = 600,
       this.height = 600,
       this.darkMode = true,
@@ -66,23 +67,28 @@ class _DartPadState extends State<DartPad> {
         'ga_id': widget.key.toString(),
       };
 
-  html.IFrameElement iframe;
+  late html.IFrameElement iframe = html.IFrameElement()
+    ..attributes = {'src': iframeSrc(options)};
 
   @override
   void initState() {
     super.initState();
-    iframe = html.IFrameElement()..attributes = {'src': iframeSrc(options)};
+
     iframe.style.width = widget.width.toInt().toString();
     iframe.style.height = widget.height.toInt().toString();
 
     // print('dartpad${widget.key}');
     // ignore: undefined_prefixed_name
-    ui.platformViewRegistry.registerViewFactory('dartpad${widget.key}', (int viewId) => iframe);
+    ui.platformViewRegistry
+        .registerViewFactory('dartpad${widget.key}', (int viewId) => iframe);
     html.window.addEventListener('message', (dynamic e) {
       if (e.data['type'] == 'ready') {
         // print(e);
-        var m = {'sourceCode': _parseFiles(HtmlUnescape().convert(widget.code)), 'type': 'sourceCode'};
-        iframe.contentWindow.postMessage(m, '*');
+        var m = {
+          'sourceCode': _parseFiles(HtmlUnescape().convert(widget.code)),
+          'type': 'sourceCode'
+        };
+        iframe.contentWindow!.postMessage(m, '*');
       }
     });
   }

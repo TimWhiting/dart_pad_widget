@@ -8,8 +8,6 @@ class InjectParser {
   final String input;
   final RegExp _beginExp = RegExp(r'{\$ begin ([a-z.]*) \$}');
   final RegExp _endExp = RegExp(r'{\$ end ([a-z.]*) \$}');
-  int _currentLine;
-  String _currentFile;
   final Map<String, String> _tokens = {};
   InjectParser(this.input);
 
@@ -17,8 +15,7 @@ class InjectParser {
   Map<String, String> read() {
     var lines = input.split('\n');
     for (var i = 0; i < lines.length; i++) {
-      _currentLine = i;
-      _readLine(lines[i]);
+      _readLine(i, lines[i]);
     }
 
     if (_tokens.isEmpty) {
@@ -28,20 +25,21 @@ class InjectParser {
     return _tokens;
   }
 
-  void _readLine(String line) {
+  void _readLine(int currentLine, String line) {
+    String? _currentFile;
     if (_beginExp.hasMatch(line)) {
       if (_currentFile == null) {
-        _currentFile = _beginExp.firstMatch(line)[1];
+        _currentFile = _beginExp.firstMatch(line)?[1];
       } else {
-        _error('$_currentLine: unexpected begin');
+        _error(currentLine, 'unexpected begin');
       }
     } else if (_endExp.hasMatch(line)) {
       if (_currentFile == null) {
-        _error('$_currentLine: unexpected end');
+        _error(currentLine, 'unexpected end');
       } else {
-        var match = _endExp.firstMatch(line)[1];
+        var match = _endExp.firstMatch(line)?[1];
         if (match != _currentFile) {
-          _error('$_currentLine: end statement did not match begin statement');
+          _error(currentLine, 'end statement did not match begin statement');
         } else {
           // add newline
           _addLine('', _currentFile);
@@ -54,15 +52,16 @@ class InjectParser {
   }
 
   void _addLine(String line, String file) {
-    if (_tokens[_currentFile] == null) {
-      _tokens[_currentFile] = line;
+    if (_tokens[file] == null) {
+      _tokens[file] = line;
     } else {
-      _tokens[_currentFile] += '\n$line';
+      _tokens[file] = _tokens[file]! + '\n$line';
     }
   }
 
-  void _error(String message) {
-    var errorMessage = 'error parsing DartPad scripts on line $_currentLine: $message';
+  void _error(int currentLine, String message) {
+    var errorMessage =
+        'error parsing DartPad scripts on line $currentLine: $message';
     throw DartPadInjectException(errorMessage);
   }
 }
@@ -97,7 +96,7 @@ class LanguageStringParser {
       if (match.groupCount != 2) {
         continue;
       }
-      opts[match[1]] = match[2];
+      opts[match[1]!] = match[2]!;
     }
 
     return opts;

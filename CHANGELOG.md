@@ -1,3 +1,6 @@
+## [2.0.0-nullsafety.0] - Jan 29 2021
+* Migrate to null safe dart
+
 ## [1.0.0] - Apr 21 2020
 * Initial Release, works on FLutter Web
 
