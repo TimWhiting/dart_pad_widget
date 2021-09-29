@@ -56,7 +56,7 @@ class _MyAppState extends State {
                   key: Key('example3'),
                   width: 800,
                   height: 400,
-                  split: 80,
+                  split: 60,
                   embeddingChoice: EmbeddingChoice.flutter,
                   darkMode: false,
                   code: """import 'package:flutter/material.dart';

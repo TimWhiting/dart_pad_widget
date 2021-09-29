@@ -38,7 +38,8 @@ class DartPad extends StatefulWidget {
     this.runImmediately = false,
     this.split,
     this.code = "void main() { print('Hello World');}",
-  }) : super(key: key);
+  })  : assert(split == null || (split <= 100 && split >= 0)),
+        super(key: key);
 
   final double width;
   final double height;
