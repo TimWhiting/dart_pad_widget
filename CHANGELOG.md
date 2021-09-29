@@ -1,3 +1,7 @@
+## [2.0.0-nullsafety.1] - Jan 29 2021
+* Update query parameters to match dart pad embedding guide
+* Added style to iframe to pass in height and width.
+
 ## [2.0.0-nullsafety.0] - Jan 29 2021
 * Migrate to null safe dart
 
