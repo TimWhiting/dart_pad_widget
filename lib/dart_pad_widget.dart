@@ -5,25 +5,10 @@ library dart_pad;
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:html' as html;
 import 'dart:ui' as ui;
-import 'package:html_unescape/html_unescape.dart';
+
 import 'package:flutter/material.dart';
+
 import 'constants.dart';
-import 'dart_pad_parser.dart';
-
-extension MapUtils<K, V> on Map<K, V> {
-  V getOrElse(K key, {required V orElse}) {
-    if (containsKey(key)) {
-      return this[key]!;
-    } else {
-      this[key] = orElse;
-      return orElse;
-    }
-  }
-}
-
-Map<String, String> _parseFiles(String snippet) {
-  return InjectParser(snippet).read();
-}
 
 const _dartPadHost = 'dartpad.dev';
 
@@ -38,6 +23,9 @@ class DartPad extends StatefulWidget {
     this.runImmediately = false,
     this.split,
     this.code = "void main() { print('Hello World');}",
+    this.testCode,
+    this.solutionCode,
+    this.hintText,
   })  : assert(split == null || (split <= 100 && split >= 0)),
         super(key: key);
 
@@ -47,6 +35,9 @@ class DartPad extends StatefulWidget {
   final bool darkMode;
   final bool runImmediately;
   final String code;
+  final String? testCode;
+  final String? solutionCode;
+  final String? hintText;
   final int? split;
 
   @override
@@ -69,6 +60,14 @@ class DartPad extends StatefulWidget {
   String get iframeStyle {
     return "width:${width}px;height:${height}px;";
   }
+
+  Map<String, String> get sourceCodeFileMap {
+    return {
+      'main.dart': code,
+      if (testCode != null) 'test.dart': testCode!,
+      if (hintText != null) 'hint.txt': hintText!,
+    };
+  }
 }
 
 class _DartPadState extends State<DartPad> {
@@ -89,11 +88,11 @@ class _DartPadState extends State<DartPad> {
     // ignore: undefined_prefixed_name
     ui.platformViewRegistry
         .registerViewFactory('dartpad${widget.key}', (int viewId) => iframe);
-    html.window.addEventListener('message', (dynamic e) {
-      if (e.data['type'] == 'ready') {
+    html.window.addEventListener('message', (e) {
+      if (e is html.MessageEvent && e.data['type'] == 'ready') {
         // print(e);
         var m = {
-          'sourceCode': _parseFiles(HtmlUnescape().convert(widget.code)),
+          'sourceCode': widget.sourceCodeFileMap,
           'type': 'sourceCode'
         };
         iframe.contentWindow!.postMessage(m, '*');

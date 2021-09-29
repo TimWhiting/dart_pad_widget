@@ -59,6 +59,7 @@ class _MyAppState extends State {
                   split: 60,
                   embeddingChoice: EmbeddingChoice.flutter,
                   darkMode: false,
+                  runImmediately: true,
                   code: """import 'package:flutter/material.dart';
 
 Future main() async {
