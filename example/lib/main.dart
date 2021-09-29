@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+
+import 'package:dart_pad_widget/constants.dart';
 import 'package:dart_pad_widget/dart_pad_widget.dart';
 
 void main() {
@@ -21,7 +23,7 @@ void main() {
                   key: Key('example2'),
                   width: 1000,
                   height: 400,
-                  flutter: true,
+                  embeddingChoice: EmbeddingChoice.flutter,
                   darkMode: true,
                   code: """import 'package:flutter/material.dart';
 
@@ -54,9 +56,9 @@ class _MyAppState extends State {
                   key: Key('example3'),
                   width: 800,
                   height: 400,
-                  split: true,
+                  split: 60,
+                  embeddingChoice: EmbeddingChoice.flutter,
                   darkMode: false,
-                  flutter: true,
                   code: """import 'package:flutter/material.dart';
 
 Future main() async {

@@ -7,68 +7,76 @@ import 'dart:html' as html;
 import 'dart:ui' as ui;
 import 'package:html_unescape/html_unescape.dart';
 import 'package:flutter/material.dart';
+import 'constants.dart';
 import 'dart_pad_parser.dart';
 
-String _valueOr(Map<String, String> map, String value, String defaultValue) {
-  if (map.containsKey(value)) {
-    return map[value]!;
+extension MapUtils<K, V> on Map<K, V> {
+  V getOrElse(K key, {required V orElse}) {
+    if (containsKey(key)) {
+      return this[key]!;
+    } else {
+      this[key] = orElse;
+      return orElse;
+    }
   }
-
-  return defaultValue;
-}
-
-var iframePrefix = 'https://dartpad.dev/';
-String iframeSrc(Map<String, String> options) {
-  var prefix = 'embed-${_valueOr(options, 'mode', 'dart')}.html';
-  var theme = 'theme=${_valueOr(options, 'theme', 'light')}';
-  var run = 'run=${_valueOr(options, 'run', 'false')}';
-  var split = 'split=${_valueOr(options, 'split', 'false')}';
-  // A unique ID used to distinguish between DartPad instances in an article or
-  // codelab.
-  var analytics = 'ga_id=${_valueOr(options, 'ga_id', 'false')}';
-
-  return '$iframePrefix$prefix?$theme&$run&$split&$analytics';
 }
 
 Map<String, String> _parseFiles(String snippet) {
   return InjectParser(snippet).read();
 }
 
+const _dartPadHost = 'dartpad.dev';
+
 /// A DartPad widget
 class DartPad extends StatefulWidget {
+  DartPad({
+    required Key key,
+    this.embeddingChoice = EmbeddingChoice.dart,
+    this.width = 600,
+    this.height = 600,
+    this.darkMode = true,
+    this.runImmediately = false,
+    this.split,
+    this.code = "void main() { print('Hello World');}",
+  })  : assert(split == null || (split <= 100 && split >= 0)),
+        super(key: key);
+
   final double width;
   final double height;
+  final EmbeddingChoice embeddingChoice;
   final bool darkMode;
-  final bool flutter;
   final bool runImmediately;
   final String code;
-  final bool split;
-  DartPad(
-      {required Key key,
-      this.width = 600,
-      this.height = 600,
-      this.darkMode = true,
-      this.flutter = false,
-      this.runImmediately = false,
-      this.split = false,
-      this.code = "void main() { print('Hello World');}"})
-      : super(key: key);
+  final int? split;
 
   @override
   _DartPadState createState() => _DartPadState();
+
+  String get iframeSrc {
+    Uri uri = Uri.https(
+      _dartPadHost,
+      embeddingChoiceToString(embeddingChoice),
+      <String, String>{
+        kThemeKey: darkMode ? kDarkMode : kLightMode,
+        kRunKey: runImmediately.toString(),
+        if (split != null) kSplitKey: split.toString(),
+        kAnalyticsKey: true.toString(),
+      },
+    );
+    return uri.toString();
+  }
+
+  String get iframeStyle {
+    return "width:${width}px;height:${height}px;";
+  }
 }
 
 class _DartPadState extends State<DartPad> {
-  Map<String, String> get options => {
-        'mode': widget.flutter ? 'flutter' : 'dart',
-        'theme': widget.darkMode ? 'dark' : 'light',
-        'run': widget.runImmediately ? 'true' : 'false',
-        'split': widget.split ? 'true' : 'false',
-        'ga_id': widget.key.toString(),
-      };
-
   late html.IFrameElement iframe = html.IFrameElement()
-    ..attributes = {'src': iframeSrc(options)};
+    ..attributes = {
+      'src': widget.iframeSrc,
+      'style': widget.iframeStyle,
+    };
 
   @override
   void initState() {
