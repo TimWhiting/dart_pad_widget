@@ -1,4 +1,4 @@
-## [2.0.0] - Sept 29 2021
+## [2.1.0] - Sept 29 2021
 * add support for solutions and test
 * put embedding choice in main file
 * added null safety param
