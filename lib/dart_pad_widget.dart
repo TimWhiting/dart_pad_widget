@@ -10,8 +10,6 @@ import 'package:flutter/material.dart';
 
 import 'constants.dart';
 
-const _dartPadHost = 'dartpad.dev';
-
 /// A DartPad widget
 class DartPad extends StatefulWidget {
   DartPad({
@@ -21,10 +19,10 @@ class DartPad extends StatefulWidget {
     this.height = 600,
     this.darkMode = true,
     this.runImmediately = false,
+    this.nullSafety = true,
     this.split,
     this.code = "void main() { print('Hello World');}",
     this.testCode,
-    this.solutionCode,
     this.hintText,
   })  : assert(split == null || (split <= 100 && split >= 0)),
         super(key: key);
@@ -34,9 +32,9 @@ class DartPad extends StatefulWidget {
   final EmbeddingChoice embeddingChoice;
   final bool darkMode;
   final bool runImmediately;
+  final bool nullSafety;
   final String code;
   final String? testCode;
-  final String? solutionCode;
   final String? hintText;
   final int? split;
 
@@ -45,13 +43,14 @@ class DartPad extends StatefulWidget {
 
   String get iframeSrc {
     Uri uri = Uri.https(
-      _dartPadHost,
+      kDartPadHost,
       _embeddingChoiceToString(embeddingChoice),
       <String, String>{
         kThemeKey: darkMode ? kDarkMode : kLightMode,
         kRunKey: runImmediately.toString(),
         if (split != null) kSplitKey: split.toString(),
-        kAnalyticsKey: true.toString(),
+        kNullSafetyKey: nullSafety.toString(),
+        kAnalyticsKey: key.toString(),
       },
     );
     return uri.toString();
