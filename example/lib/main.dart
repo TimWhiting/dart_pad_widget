@@ -15,13 +15,32 @@ void main() {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 DartPad(
-                  key: Key('example1'),
+                  key: Key('runnable dart code'),
                   width: 500,
                   height: 400,
                   code: 'void main() => print("Hello DartPad Widget");',
                 ),
                 DartPad(
-                  key: Key('example2'),
+                  key: Key('dart with test, solution and hint'),
+                  width: 800,
+                  height: 400,
+                  code: '''String helloDartPad() {
+  return "Hello DartPad Widget";
+}''',
+                  hintText: 'You don\'t sound excited enough!',
+                  testCode: '''main () {
+  final String message = helloDartPad();
+  if ((message) == "Hello DartPad Widget!") {
+    return _result(true);
+  };
+  _result(false, ["Invalid hello message: \$message"]);
+}''',
+                  solutionCode: '''String helloDartPad() {
+  return "Hello DartPad Widget!";
+}''',
+                ),
+                DartPad(
+                  key: Key('runnable Flutter code'),
                   width: 1000,
                   height: 400,
                   embeddingChoice: EmbeddingChoice.flutter,
@@ -54,7 +73,7 @@ class _MyAppState extends State {
 }""",
                 ),
                 DartPad(
-                  key: Key('example3'),
+                  key: Key('runnable flutter code with false dark mode.'),
                   width: 800,
                   height: 400,
                   split: 60,

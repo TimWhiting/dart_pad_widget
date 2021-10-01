@@ -23,19 +23,76 @@ class DartPad extends StatefulWidget {
     this.split,
     this.code = "void main() { print('Hello World');}",
     this.testCode,
+    this.solutionCode,
     this.hintText,
   })  : assert(split == null || (split <= 100 && split >= 0)),
         super(key: key);
 
+  /// The desired width of the dart pad widget.
   final double width;
+
+  /// The desired height of the dart pad widget.
   final double height;
+
+  /// The kind of dart pad widget to be generated.
+  ///
+  /// See: https://github.com/dart-lang/dart-pad/wiki/Embedding-Guide#embedding-choices
   final EmbeddingChoice embeddingChoice;
+
+  /// Whether the widget should use dark mode styling.
   final bool darkMode;
+
+  /// Whether the specified code should be run as soon as the widget is loaded.
   final bool runImmediately;
+
+  /// Whether the editor should use null-safe dart.
   final bool nullSafety;
+
+  /// The code to pre-load into the dart pad editor.
+  ///
+  /// To make [code] runnable, include a `main()` function in it. Note that
+  /// [code] and the following optional [testCode] parameter will be run as if
+  /// they were in the same file so should only define `main()` in one of the
+  /// two.
   final String code;
+
+  /// Optional test code that can be displayed in the editor and used to
+  /// reference and test the behavior of [code].
+  ///
+  /// This will run as if it were in the same file as [code] so you can
+  /// reference any content in [code] from here. To run the tests, include a
+  /// `main()` function here that calls them and do not include a main function
+  /// in [code].
+  ///
+  /// Code here will have access to a hidden method:
+  ///   `void _result(bool didPass, [List<String> failurMessages])`
+  /// Call result with true to indicate that the test passed. Call it with false
+  /// and optional failure messages to indicate that the test failed and why it
+  /// failed.
+  ///
+  /// To view tests, users have to tap on the triple dot button in the editor
+  /// and toggle their visibility.
   final String? testCode;
+
+  /// Optional solution code.
+  ///
+  /// This is intended for code lab content where you are testing a user and
+  /// want to show them the correct answer if they wish to see it.
+  ///
+  /// The solution code should be code that will make [testCode] pass.
+  final String? solutionCode;
+
+  /// Text that can be displayed as a message in the editor.
+  ///
+  /// This is intended for code lab content where you are testing
+  /// a user's knowledge and want to give them an optional hint to help them
+  /// solve the challenge.
   final String? hintText;
+
+  /// The proportion of space (0-100) to give to code entry in the editor UI.
+  ///
+  /// For example, a value of 60 will fill the left 60% of the editor with code
+  /// entry and the right 40% with console or UI output.
   final int? split;
 
   @override
@@ -64,6 +121,7 @@ class DartPad extends StatefulWidget {
     return {
       'main.dart': code,
       if (testCode != null) 'test.dart': testCode!,
+      if (solutionCode != null) 'solution.dart': solutionCode!,
       if (hintText != null) 'hint.txt': hintText!,
     };
   }
