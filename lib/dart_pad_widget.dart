@@ -65,7 +65,7 @@ class DartPad extends StatefulWidget {
   /// in [code].
   ///
   /// Code here will have access to a hidden method:
-  ///   `void _result(bool didPass, [List<String> failurMessages])`
+  ///   `void _result(bool didPass, [List<String> failureMessages])`
   /// Call result with true to indicate that the test passed. Call it with false
   /// and optional failure messages to indicate that the test failed and why it
   /// failed.
@@ -76,7 +76,7 @@ class DartPad extends StatefulWidget {
 
   /// Optional solution code.
   ///
-  /// This is intended for code lab content where you are testing a user and
+  /// This is intended for codelab content where you are testing a user and
   /// want to show them the correct answer if they wish to see it.
   ///
   /// The solution code should be code that will make [testCode] pass.
@@ -84,7 +84,7 @@ class DartPad extends StatefulWidget {
 
   /// Text that can be displayed as a message in the editor.
   ///
-  /// This is intended for code lab content where you are testing
+  /// This is intended for codelab content where you are testing
   /// a user's knowledge and want to give them an optional hint to help them
   /// solve the challenge.
   final String? hintText;
@@ -141,17 +141,13 @@ class _DartPadState extends State<DartPad> {
     iframe.style.width = widget.width.toInt().toString();
     iframe.style.height = widget.height.toInt().toString();
 
-    // print('dartpad${widget.key}');
     // ignore: undefined_prefixed_name
     ui.platformViewRegistry
         .registerViewFactory('dartpad${widget.key}', (int viewId) => iframe);
     html.window.addEventListener('message', (e) {
       if (e is html.MessageEvent && e.data['type'] == 'ready') {
         // print(e);
-        var m = {
-          'sourceCode': widget.sourceCodeFileMap,
-          'type': 'sourceCode'
-        };
+        var m = {'sourceCode': widget.sourceCodeFileMap, 'type': 'sourceCode'};
         iframe.contentWindow!.postMessage(m, '*');
       }
     });

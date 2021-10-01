@@ -1,4 +1,12 @@
 ## [2.0.0] - Sept 29 2021
+* add support for solutions and test
+* put embedding choice in main file
+* added null safety param
+* added extensive documentation and an example using solution test and hint
+* generated dartdocs
+Thanks @caseycrogers
+
+## [2.0.0] - Sept 29 2021
 * Update query parameters to match dart pad embedding guide
 * Added style to iframe to pass in height and width.
 Thanks @caseycrogers
