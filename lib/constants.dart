@@ -1,4 +1,4 @@
-const kDartPadHost = 'dartpad.dev';
+const kDartPadHost = 'old-dartpad-3ce3f.web.app';
 
 const String kThemeKey = 'theme';
 const String kRunKey = 'run';

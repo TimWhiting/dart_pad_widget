@@ -1,3 +1,9 @@
+## [2.2.1] - Mar 13 2024
+* Improve package description
+
+## [2.2.0] - Mar 13 2024
+* Switch to old dartpad url for iframes to support old format of embedding
+
 ## [2.1.0] - Sept 29 2021
 * add support for solutions and test
 * put embedding choice in main file
